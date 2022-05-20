@@ -12,11 +12,35 @@ class PokedexView extends StatelessWidget {
     return Scaffold(
       body: BlocBuilder<PokemonBloc, PokemonState>(builder: (context, state) {
         if (state is PokemonLoadingInProgress) {
-          return const Center(child: CircularProgressIndicator(),);
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         } else if (state is PokemonPageLoadSuccess) {
-          return GridView.builder(gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3), itemCount: state.pokemonListings.length, itemBuilder: (context, index) {return Card(child: GridTile(child: Column(children: [Image.network(''), Text(state.pokemonListings[index].name)],),),);},);
+          return GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3),
+            itemCount: state.pokemonListings.length,
+            itemBuilder: (context, index) {
+              return Card(
+                child: GridTile(
+                  child: Column(
+                    children: [
+                      Image.network(''),
+                      Text(state.pokemonListings[index].name)
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        } else if (state is PokemonPageLoadFailed) {
+          return Center(
+            child: Text(state.error.toString()),
+          );
+        } else {
+          return Container();
         }
       }),
-    )
+    );
   }
 }
